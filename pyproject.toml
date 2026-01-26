@@ -78,6 +78,14 @@ line_length = 88
 line-length = 88
 indent-width = 4
 src = ["src"]
+exclude = [
+    "ros2-bridger",
+    "build",
+    "install",
+    "log",
+    "dist",
+    "*.egg-info"
+]
 
 [tool.ruff.format]
 quote-style = "double"

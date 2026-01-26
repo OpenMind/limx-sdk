@@ -29,15 +29,15 @@ jobs:
 
     - name: Run Ruff
       run: |
-        ruff check .
+        ruff check . --exclude ros2-bridger
 
     - name: Check code formatting with black
       run: |
-        black --check --diff .
+        black --check --diff --exclude ros2-bridger .
 
     - name: Check import sorting with isort
       run: |
-        isort --check-only --diff .
+        isort --check-only --diff --skip ros2-bridger .
 
     - name: Install pre-commit
       run: pip install pre-commit
