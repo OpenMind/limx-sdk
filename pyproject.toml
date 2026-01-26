@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tron_sdk*"]
+exclude = ["*.tests", "*.tests.*", "tests.*", "tests"]
+
+[project]
+name = "limx-sdk"
+version = "1.0.0"
+description = "LIMX SDK for TRON robot"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "OpenMind", email = "hello@openmind.org"},
+]
+keywords = ["limx", "sdk", "tron", "robot"]
+
+dependencies = [
+    "Flask==3.1.1",
+    "Flask-Cors==6.0.0",
+    "Werkzeug==3.1.5",
+    "MarkupSafe==3.0.2",
+    "click==8.2.1",
+    "itsdangerous==2.2.0",
+    "Jinja2==3.1.6",
+    "docker==7.1.0",
+    "requests==2.32.5",
+    "urllib3==2.6.3",
+    "idna==3.10",
+    "certifi==2025.8.3",
+    "chardet==5.2.0",
+    "websockets==15.0.1",
+    "eclipse-zenoh==1.5.0",
+    "pyserial==3.5",
+    "annotated-types==0.7.0",
+    "pydantic==2.11.9",
+    "pydantic-core==2.33.2",
+    "typing-extensions==4.15.0",
+    "typing-inspection==0.4.1",
+    "numpy<2",
+    "scipy==1.15.3",
+    "opencv-python>=4.8.0,<4.10.0",
+    "apriltag==0.0.16",
+    "numba==0.63.1",
+    "coverage==7.13.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.9.3",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenMind/limx-sdk"
+Repository = "https://github.com/OpenMind/limx-sdk"
+Documentation = "https://github.com/OpenMind/limx-sdk/blob/main/README.md"
+Issues = "https://github.com/OpenMind/limx-sdk/issues"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+src = ["src"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = ["E", "F", "D"]
+ignore = ["E203", "E501", "D100", "D104", "D200", "D205", "D401", "D404"]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

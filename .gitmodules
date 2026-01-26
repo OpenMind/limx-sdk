@@ -1,0 +1,3 @@
+[submodule "ros2-bridger"]
+	path = ros2-bridger
+	url = https://github.com/limxdynamics/ros2-bridger.git
