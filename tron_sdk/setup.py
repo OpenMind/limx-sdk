@@ -26,6 +26,7 @@ setup(
             "local_traversability_node = tron_sdk.local_traversability_node:main",
             "d435_obstacle_dector = tron_sdk.d435_obstacle_dector:main",
             "go2_lidar_localization = tron_sdk.go2_lidar_localization:main",
+            "cmd_vel_to_tron = tron_sdk.tron_movement:main",
         ],
     },
 )
