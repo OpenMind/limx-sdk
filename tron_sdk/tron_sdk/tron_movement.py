@@ -42,6 +42,10 @@ class Tron1Bridge(Node):
         self.max_linear = self.get_parameter("max_linear").value
         self.max_angular = self.get_parameter("max_angular").value
 
+        # Movement timeout (stop if no cmd_vel received)
+        self.movement_timeout = 1.0  # seconds
+        self.last_cmd_time = time.time()
+
         # Velocity state
         self.x = 0.0
         self.y = 0.0
@@ -101,6 +105,9 @@ class Tron1Bridge(Node):
 
     def cmd_vel_callback(self, msg: Twist):
         """Convert cmd_vel to Tron1 ratio format (-1 to 1)."""
+        # Update last command time
+        self.last_cmd_time = time.time()
+
         # Normalize to -1 to 1 range
         self.x = max(-1.0, min(1.0, msg.linear.x / self.max_linear))
         self.y = max(-1.0, min(1.0, msg.linear.y / self.max_linear))
@@ -109,6 +116,12 @@ class Tron1Bridge(Node):
     def send_loop(self):
         """Send twist commands at 30Hz."""
         while self.running:
+            # Check for movement timeout - stop if no cmd_vel received
+            if (time.time() - self.last_cmd_time) > self.movement_timeout:
+                self.x = 0.0
+                self.y = 0.0
+                self.z = 0.0
+
             if self.ws:
                 try:
                     msg = {
