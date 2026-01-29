@@ -1,20 +1,26 @@
 {
   mode: "peer",
   "listen": {
-    "endpoints": ["tcp/127.0.0.1:7447"]
+    "endpoints": ["tcp/0.0.0.0:7447"]
+  },
+  "connect": {
+    "endpoints": []
   },
   "scouting": {
     "multicast": {
-      "enabled": false
+      "enabled": true,
+      "address": "224.0.0.224:7446",
+      "interface": "auto"
     },
     "gossip": {
-      "enabled": false
+      "enabled": true
     }
   },
   plugins: {
     ros2dds: {
       nodename: "zenoh_bridge_ros2dds_limx",
       domain: 0,
+      "ros_localhost_only": false,
       allow: {
         publishers: [
                       // Core robot state topics
@@ -43,10 +49,12 @@
                       ".*/cmd_vel",
                       ".*/cmd_vel_nav",
                       ".*/cmd_vel_teleop",
+                      ".*/sdk_cmd_vel",
                       ".*/lowcmd",
 
                       // Sensor data
                       ".*/utlidar/imu",
+                      ".*/imu",
                       ".*/scan",
                       ".*/utlidar/cloud",
                       ".*/utlidar/cloud_deskewed",
@@ -63,6 +71,14 @@
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_color",
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_infra1",
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_infra2",
+
+                      // MROS bridged topics (from Tron1 robot via mrosbridger)
+                      ".*/joint_states",
+                      ".*/robot_description",
+                      ".*/battery_state",
+                      ".*/motor_state",
+                      ".*/foot_contact",
+                      ".*/body_pose",
 
                       // OM
                       ".*/om/paths",
@@ -111,6 +127,8 @@
                       ".*/public_network_status",
                       ".*/rtc_status",
                       ".*/config_change_status",
+                      ".*/rosout",
+                      ".*/parameter_events",
 
                       // Input devices
                       ".*/joy",
@@ -155,10 +173,12 @@
                       ".*/cmd_vel",
                       ".*/cmd_vel_nav",
                       ".*/cmd_vel_teleop",
+                      ".*/sdk_cmd_vel",
                       ".*/lowcmd",
 
                       // Sensor data
                       ".*/utlidar/imu",
+                      ".*/imu",
                       ".*/scan",
                       ".*/utlidar/cloud",
                       ".*/utlidar/cloud_deskewed",
@@ -175,6 +195,14 @@
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_color",
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_infra1",
                       ".*/camera/realsense2_camera_node/extrinsics/depth_to_infra2",
+
+                      // MROS bridged topics
+                      ".*/joint_states",
+                      ".*/robot_description",
+                      ".*/battery_state",
+                      ".*/motor_state",
+                      ".*/foot_contact",
+                      ".*/body_pose",
 
                       // OM
                       ".*/om/paths",
@@ -224,7 +252,11 @@
 
                       // GPT and AI integration
                       ".*/gpt_cmd",
-                      ".*/gptflowfeedback"
+                      ".*/gptflowfeedback",
+
+                      // System topics
+                      ".*/rosout",
+                      ".*/parameter_events"
                      ],
         service_servers: [
           // API services
