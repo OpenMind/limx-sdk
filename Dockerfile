@@ -62,9 +62,13 @@ RUN echo '#!/bin/bash' > /entrypoint.sh && \
     echo '# Source ROS environment' >> /entrypoint.sh && \
     echo 'source /opt/ros/humble/setup.bash' >> /entrypoint.sh && \
     echo 'source /app/limx_sdk/install/setup.bash' >> /entrypoint.sh && \
+    echo 'source /app/limx_sdk/ros2-bridger/aarch64/humble/install/setup.bash' >> /entrypoint.sh && \
     echo '' >> /entrypoint.sh && \
     echo '# If no arguments provided, run default command' >> /entrypoint.sh && \
     echo 'if [ $# -eq 0 ]; then' >> /entrypoint.sh && \
+    echo '    # Launch mrosbridger in background' >> /entrypoint.sh && \
+    echo '    ros2 launch mrosbridger mrosbridger.launch.py &' >> /entrypoint.sh && \
+    echo '    # Launch sensor launch as main process' >> /entrypoint.sh && \
     echo '    exec ros2 launch tron_sdk sensor_launch.py' >> /entrypoint.sh && \
     echo 'else' >> /entrypoint.sh && \
     echo '    exec "$@"' >> /entrypoint.sh && \

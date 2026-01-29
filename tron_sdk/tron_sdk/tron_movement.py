@@ -48,9 +48,9 @@ class Tron1Bridge(Node):
         self.z = 0.0
         self.running = True
 
-        # WebSocket connection
+        # WebSocket connection (retry on boot to wait for Tron1)
         self.ws = None
-        self.connect_ws()
+        self.connect_ws(retry_on_fail=True)
 
         # Subscribe to cmd_vel
         self.subscription = self.create_subscription(
@@ -66,14 +66,38 @@ class Tron1Bridge(Node):
         )
         self.get_logger().info("Subscribing to /cmd_vel")
 
-    def connect_ws(self):
-        """Connect to Tron1 WebSocket."""
-        try:
-            self.ws = websocket.create_connection(self.host, timeout=5)
-            self.get_logger().info("WebSocket connected!")
-        except Exception as e:
-            self.get_logger().error(f"WebSocket connection failed: {e}")
-            self.ws = None
+    def connect_ws(self, retry_on_fail: bool = False, max_retries: int = 10):
+        """Connect to Tron1 WebSocket with optional retry logic.
+
+        Args:
+            retry_on_fail: If True, retry connection on failure (for boot-time connection)
+            max_retries: Maximum number of retry attempts when retry_on_fail is True
+        """
+        retries = 0
+        while True:
+            try:
+                self.ws = websocket.create_connection(self.host, timeout=5)
+                self.get_logger().info("WebSocket connected!")
+                return True
+            except Exception as e:
+                self.get_logger().error(f"WebSocket connection failed: {e}")
+                self.ws = None
+
+                if not retry_on_fail:
+                    return False
+
+                retries += 1
+                if retries >= max_retries:
+                    self.get_logger().error(
+                        f"Failed to connect after {max_retries} attempts, "
+                        "will continue retrying in send loop"
+                    )
+                    return False
+
+                self.get_logger().info(
+                    f"Retrying connection in 3 seconds... ({retries}/{max_retries})"
+                )
+                time.sleep(3)
 
     def cmd_vel_callback(self, msg: Twist):
         """Convert cmd_vel to Tron1 ratio format (-1 to 1)."""

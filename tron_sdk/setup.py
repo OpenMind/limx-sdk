@@ -27,6 +27,7 @@ setup(
             "d435_obstacle_dector = tron_sdk.d435_obstacle_dector:main",
             "go2_lidar_localization = tron_sdk.go2_lidar_localization:main",
             "cmd_vel_to_tron = tron_sdk.tron_movement:main",
+            "tron_odom = tron_sdk.tron_odom:main",
         ],
     },
 )

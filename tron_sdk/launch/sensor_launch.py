@@ -212,5 +212,23 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[{"use_sim_time": use_sim, "assume_optical_frame": use_sim}],
             ),
+            Node(
+                package="tron_sdk",
+                executable="tron_odom",
+                name="tron_odom",
+                output="screen",
+                respawn=True,
+                respawn_delay=2.0,
+                condition=UnlessCondition(use_sim),
+            ),
+            Node(
+                package="tron_sdk",
+                executable="cmd_vel_to_tron",
+                name="cmd_vel_to_tron",
+                output="screen",
+                respawn=True,
+                respawn_delay=2.0,
+                condition=UnlessCondition(use_sim),
+            ),
         ]
     )
